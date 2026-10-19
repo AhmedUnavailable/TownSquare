@@ -70,7 +70,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 // --- POSTS ROUTES ---
 
-// GET /api/posts?lat=&lng=&radius=km  — nearby feed (public, no auth required)
+// GET /api/posts?lat=&lng=&radius=km  — nearby feed (publlic, no auth required)
 app.get('/api/posts', async (req, res) => {
   try {
     const { lat, lng, radius = 5 } = req.query;

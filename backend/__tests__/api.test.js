@@ -3,24 +3,22 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 const request = require('supertest');
 
-// Mock OpenAI so AI classification doesn't call external API
-jest.mock('openai', () => {
-  return {
-    OpenAI: jest.fn().mockImplementation(() => ({
-      chat: {
-        completions: {
-          create: jest.fn().mockResolvedValue({
-            choices: [{ message: { content: JSON.stringify({ postType: 'Issue', priority: 'High' }) } }]
-          })
-        }
+// Mock Groq so AI classification doesn't call external API
+jest.mock('groq-sdk', () => {
+  return jest.fn().mockImplementation(() => ({
+    chat: {
+      completions: {
+        create: jest.fn().mockResolvedValue({
+          choices: [{ message: { content: JSON.stringify({ postType: 'Issue', priority: 'High' }) } }]
+        })
       }
-    }))
-  };
+    }
+  }));
 });
 
 process.env.JWT_SECRET = 'test-secret';
 process.env.NODE_ENV = 'test';
-process.env.OPENAI_API_KEY = 'test-key';
+process.env.GROQ_API_KEY = 'test-key';
 
 const app = require('../index');
 
